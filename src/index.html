@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StreamVault - IPTV Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'sv-bg-deep': '#0a0a0a', // Deep charcoal base
+              'sv-glass-sidebar': 'hsla(240, 15%, 10%, 0.6)', // Dark, slightly blueish glass for sidebar
+              'sv-glass-mainpane': 'hsla(240, 18%, 8%, 0.7)', // Very dark glass for main content area
+              'sv-glass-card': 'hsla(240, 15%, 12%, 0.5)', // Glass for cards, settings sections
+              'sv-glass-search': 'hsla(240, 12%, 15%, 0.6)', // Glass for search bar, header elements
+              'sv-glass-welcome': 'hsla(240, 15%, 10%, 0.7)', // Glass for welcome banner
+              'sv-border-glass': 'hsla(220, 15%, 25%, 0.3)', // Subtle border for glass elements
+              'sv-border-glass-hover': 'hsla(190, 80%, 60%, 0.5)', // Cyan glow border on hover
+              
+              'sv-text-primary': '#EAEAEA', // Primary text (crisp off-white)
+              'sv-text-secondary': '#A0A0B8', // Secondary text (lighter grey-blue)
+              'sv-text-emphasis': 'hsl(0, 0%, 95%)', // High emphasis white
+
+              'sv-accent-cyan': 'hsl(190, 100%, 50%)', // #00F0FF - Bright Cyan
+              'sv-accent-purple': 'hsl(255, 100%, 68%)', // #7D5FFF - Bright Purple
+              
+              'sv-accent-gradient-from': 'hsla(190, 100%, 50%, 0.8)', // More vibrant cyan for nav gradient
+              'sv-accent-gradient-to': 'hsla(255, 100%, 68%, 0.7)',   // More vibrant purple for nav gradient
+
+              // Status colors (can remain similar or be tweaked for new theme)
+              'sv-danger': '#ff4444',
+              'sv-success': 'hsl(145, 63%, 52%)', // Adjusted green
+              'sv-warning': '#ffaa00',
+              'sv-status-connected': 'hsl(140, 70%, 60%)',
+
+              // Legacy/Component-specific (try to replace with theme colors)
+              'sv-hover-bg': 'hsla(220, 15%, 20%, 0.4)', // Adjusted hover for glassy elements
+            },
+            boxShadow: {
+              'glow-cyan-nav': '0 0 18px 0px hsla(190, 100%, 50%, 0.5), 0 0 6px 0px hsla(190, 100%, 50%, 0.4)',
+              'glow-cyan-card-hover': '0 0 20px 2px hsla(190, 100%, 50%, 0.25)',
+            },
+            aspectRatio: {
+              '4/3': '4 / 3',
+              'video': '16 / 9', 
+            },
+            gridTemplateColumns: {
+              'content-fill': 'repeat(auto-fill, minmax(200px, 1fr))',
+            },
+            animation: {
+                fadeInUp: 'fadeInUp 0.5s ease-out forwards',
+            },
+            keyframes: {
+                fadeInUp: {
+                    '0%': { opacity: '0', transform: 'translateY(15px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react/jsx-runtime": "https://esm.sh/react@^19.1.0/jsx-runtime",
+    "react/jsx-dev-runtime": "https://esm.sh/react@^19.1.0/jsx-dev-runtime",
+    "react-dom": "https://esm.sh/react-dom@^19.1.0",
+    "react-dom/client": "https://esm.sh/react-dom@^19.1.0/client",
+    "hls.js": "https://esm.sh/hls.js@^1.6.2",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.49.8",
+    "framer-motion": "https://esm.sh/framer-motion@^12.14.0"
+  }
+}
+</script>
+<style>
+  /* Futuristic Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: hsla(240, 20%, 6%, 0.3); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb { background-color: hsla(190, 100%, 50%, 0.6); border-radius: 4px; border: 1px solid hsla(190, 100%, 50%, 0.3); }
+  ::-webkit-scrollbar-thumb:hover { background-color: hsla(190, 100%, 50%, 0.8); }
+  html { scrollbar-width: thin; scrollbar-color: hsla(190, 100%, 50%, 0.6) hsla(240, 20%, 6%, 0.3); }
+  
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Base input style for consistent dark theme appearance if not overridden by Tailwind */
+  input[type="text"], input[type="search"], input[type="url"], input[type="password"], input[type="email"], textarea, select {
+    background-color: #1A1E2C; /* Dark base for inputs, matches modal input style */
+    color: #EAEAEA; /* Light text for inputs */
+    border: 1px solid hsla(220, 15%, 25%, 0.3); /* sv-border-glass */
+    border-radius: 0.5rem; /* Corresponds to rounded-lg */
+    padding: 0.625rem; /* Corresponds to p-2.5 */
+  }
+  input[type="text"]:focus, input[type="search"]:focus, input[type="url"]:focus, input[type="password"]:focus, input[type="email"]:focus, textarea:focus, select:focus {
+    border-color: hsl(190, 100%, 50%); /* sv-accent-cyan */
+    box-shadow: 0 0 0 1px hsl(190, 100%, 50%); /* sv-accent-cyan ring */
+    outline: none;
+  }
+  select option {
+    background-color: #1A1E2C; /* Dark base for options */
+    color: #EAEAEA; /* Light text for options */
+  }
+  ::placeholder {
+    color: #A0A0B8; /* sv-text-secondary */
+    opacity: 0.7;
+  }
+</style>
+</head>
+  <body class="bg-sv-bg-deep text-sv-text-primary select-none">
+    <div id="root"></div>
+    <script type="module" src="./renderer.js"></script>
+  </body>
+</html>

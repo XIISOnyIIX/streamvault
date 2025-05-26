@@ -1,0 +1,29 @@
+{
+  "name": "streamvault-electron",
+  "version": "1.0.0",
+  "description": "StreamVault IPTV Player with Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:react": "esbuild src/renderer.tsx --bundle --outfile=src/renderer.js --jsx=automatic --platform=browser --format=esm",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "esbuild": "^0.20.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "hls.js": "^1.5.8",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "electron-updater": "^6.2.1",
+    "framer-motion": "^12.14.0"
+  }
+}
